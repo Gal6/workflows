@@ -4,7 +4,7 @@ name: Reusable Build & Push
 on:
   workflow_call:
     inputs:
-      dockerfilepath:
+      dockerfile_path:
         required: true
         type: string
       ecr_repository:
