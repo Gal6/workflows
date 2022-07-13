@@ -58,4 +58,4 @@ jobs:
         task-definition: ${{ steps.task-def.outputs.task-definition }}
         service: ${{ inputs.service_name }}
         cluster: ${{ inputs.cluster_name }}
-        wait-for-service-stability: true
+        wait-for-service-stability: false
