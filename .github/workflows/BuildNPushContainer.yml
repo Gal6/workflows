@@ -52,5 +52,5 @@ jobs:
           IMAGE_TAG: ${{ github.run_id }}
         working-directory: ${{ inputs.dockerfile_path }}
         run: |
-          docker build -t $ECR_REGISTRY/${{ inputs.ecr_repository }}:$IMAGE_TAG --build-arg nuget_username=${{ secrets.PACKAGES_USERNAME }} --build-arg nuget_password=${{ secrets.PACKAGES_PAT }} ${{ inputs. working_directory_path }}
+          docker build -t $ECR_REGISTRY/${{ inputs.ecr_repository }}:$IMAGE_TAG --build-arg nuget_username=${{ secrets.PACKAGES_USERNAME }} --build-arg nuget_password=${{ secrets.PACKAGES_PAT }} ${{ inputs.working_directory_path }}
           docker push $ECR_REGISTRY/${{ inputs.ecr_repository }}:$IMAGE_TAG
