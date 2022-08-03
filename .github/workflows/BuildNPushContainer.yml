@@ -7,6 +7,9 @@ on:
       dockerfile_path:
         required: true
         type: string
+      working_directory_path:
+        type: string
+        default: "."
       ecr_repository:
         required: true
         type: string
@@ -42,12 +45,12 @@ jobs:
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
-     
+            
       - name: Build, tag, and push image to Amazon ECR
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}          
           IMAGE_TAG: ${{ github.run_id }}
         working-directory: ${{ inputs.dockerfile_path }}
         run: |
-          docker build -t $ECR_REGISTRY/${{ inputs.ecr_repository }}:$IMAGE_TAG --build-arg nuget_username=${{ secrets.PACKAGES_USERNAME }} --build-arg nuget_password=${{ secrets.PACKAGES_PAT }} .
+          docker build -t $ECR_REGISTRY/${{ inputs.ecr_repository }}:$IMAGE_TAG --build-arg nuget_username=${{ secrets.PACKAGES_USERNAME }} --build-arg nuget_password=${{ secrets.PACKAGES_PAT }} ${{ inputs. working_directory_path }}
           docker push $ECR_REGISTRY/${{ inputs.ecr_repository }}:$IMAGE_TAG
