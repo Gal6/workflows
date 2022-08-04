@@ -7,6 +7,9 @@ on:
       dockerfile_path:
         required: true
         type: string
+      dockerfile_name:
+        type: string
+        default: "Dockerfile"
       working_directory_path:
         type: string
         default: "."
@@ -53,8 +56,7 @@ jobs:
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}          
           IMAGE_TAG: ${{ github.run_id }}
-        working-directory: '${{ inputs.dockerfile_path }}'
         run: |           
           echo dockerfile path: ${{ inputs.dockerfile_path }}
-          docker build -t $ECR_REGISTRY/${{ inputs.ecr_repository }}:$IMAGE_TAG --build-arg nuget_username=${{ secrets.PACKAGES_USERNAME }} --build-arg nuget_password=${{ secrets.PACKAGES_PAT }} '${{ inputs.working_directory_path }}'
+          docker build -t $ECR_REGISTRY/${{ inputs.ecr_repository }}:$IMAGE_TAG --build-arg nuget_username=${{ secrets.PACKAGES_USERNAME }} --build-arg nuget_password=${{ secrets.PACKAGES_PAT }} -f "${{ env.dockerfile_path }}${{ env.dockerfile_path }}" "${{ env.dockerfile_name }}"
           docker push $ECR_REGISTRY/${{ inputs.ecr_repository }}:$IMAGE_TAG
