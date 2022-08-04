@@ -23,8 +23,11 @@ jobs:
           echo "-------------- inputs --------------"
           echo git ref: $GITHUB_REF
           echo git commit hash: $GITHUB_SHA
-          echo github.run_id ${{ github.run_id }}
-          echo github.run_number ${{ github.run_number }}
+          echo github.run_id: ${{ github.run_id }}
+          echo github.run_number: ${{ github.run_number }}
+          echo dockerfile path: ${{ inputs.dockerfile_path }}
+          echo working directory path: ${{ inputs.working_directory_path }}
+          echo ecr repository: ${{ inputs.ecr_repository }}
           
       - uses: actions/checkout@v3
       - name: Add "GitHub Packages" NuGet Source
@@ -51,6 +54,7 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}          
           IMAGE_TAG: ${{ github.run_id }}
         working-directory: ${{ inputs.dockerfile_path }}
-        run: |
+        run: |           
+          echo dockerfile path: ${{ inputs.dockerfile_path }}
           docker build -t $ECR_REGISTRY/${{ inputs.ecr_repository }}:$IMAGE_TAG --build-arg nuget_username=${{ secrets.PACKAGES_USERNAME }} --build-arg nuget_password=${{ secrets.PACKAGES_PAT }} ${{ inputs.working_directory_path }}
           docker push $ECR_REGISTRY/${{ inputs.ecr_repository }}:$IMAGE_TAG
